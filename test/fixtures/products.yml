@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  note: MyText
+  exportedAt: 2017-06-06 01:19:38
+  defaultVariationId: 1
+  family: one
+
+two:
+  note: MyText
+  exportedAt: 2017-06-06 01:19:38
+  defaultVariationId: 1
+  family: two

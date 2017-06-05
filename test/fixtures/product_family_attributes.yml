@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  attribute: one
+  family: one
+  position: 1
+  group: one
+  type: 
+  required: false
+  indexed: false
+  filtered: false
+
+two:
+  attribute: two
+  family: two
+  position: 1
+  group: two
+  type: 
+  required: false
+  indexed: false
+  filtered: false
