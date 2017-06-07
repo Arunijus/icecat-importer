@@ -7,7 +7,6 @@ class ImporterController < ApplicationController
     resp = Net::HTTP.get_response(URI.parse(source))
     @data = resp.body
 
-    # @result = JSON.parse(data)
-    # @temp = @result["data"].keys
+    @product = Product.create()
   end
 end
