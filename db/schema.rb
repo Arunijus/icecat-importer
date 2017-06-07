@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170607091239) do
+ActiveRecord::Schema.define(version: 20170607100533) do
 
   create_table "assortment", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.boolean "is_active"
@@ -199,15 +199,16 @@ ActiveRecord::Schema.define(version: 20170607091239) do
   end
 
   create_table "supplier_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer "variation_id"
     t.text "measurment_unit", limit: 255
     t.text "payload"
     t.bigint "supplier_category_id"
     t.bigint "supplier_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "variation_id"
     t.index ["supplier_category_id"], name: "index_supplier_items_on_supplier_category_id"
     t.index ["supplier_id"], name: "index_supplier_items_on_supplier_id"
+    t.index ["variation_id"], name: "index_supplier_items_on_variation_id"
   end
 
   create_table "suppliers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -277,6 +278,7 @@ ActiveRecord::Schema.define(version: 20170607091239) do
   add_foreign_key "supplier_categories", "suppliers"
   add_foreign_key "supplier_items", "supplier_categories"
   add_foreign_key "supplier_items", "suppliers"
+  add_foreign_key "supplier_items", "variations"
   add_foreign_key "variation_gtins", "suppliers"
   add_foreign_key "variation_gtins", "variations"
   add_foreign_key "variation_photos", "variations"
