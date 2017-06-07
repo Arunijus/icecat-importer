@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  foreign_id: MyText
+  supplier: one
+  attribute: one
+
+two:
+  foreign_id: MyText
+  supplier: two
+  attribute: two
