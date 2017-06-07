@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  attribute: one
+  attribute_value: one
+  product: one
+
+two:
+  attribute: two
+  attribute_value: two
+  product: two

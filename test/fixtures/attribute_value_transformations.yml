@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  attribute: one
+  from_value: MyText
+  to_value: MyText
+  is_enabled: false
+  locale: MyString
+
+two:
+  attribute: two
+  from_value: MyText
+  to_value: MyText
+  is_enabled: false
+  locale: MyString
