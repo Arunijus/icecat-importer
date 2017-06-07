@@ -44,18 +44,6 @@ ActiveRecord::Schema.define(version: 20170607091239) do
     t.index ["attribute_id"], name: "index_attribute_value_transformations_on_attribute_id"
   end
 
-  create_table "attribute_value_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer "attribute_value_id", null: false
-    t.string "locale", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.text "attr_value"
-    t.string "status"
-    t.string "hash"
-    t.index ["attribute_value_id"], name: "index_attribute_value_translations_on_attribute_value_id"
-    t.index ["locale"], name: "index_attribute_value_translations_on_locale"
-  end
-
   create_table "attribute_values", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "attribute_id"
     t.string "identifier"
