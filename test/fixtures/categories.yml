@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  parent_id: 1
+  name: MyText
+  is_visible: false
+  foreign_id: MyText
+  slug: MyText
+  depth: 1
+  identifier: MyText
+  priority: 1
+  description: MyText
+  display_rule: MyText
+  family_id: 1
+
+two:
+  parent_id: 1
+  name: MyText
+  is_visible: false
+  foreign_id: MyText
+  slug: MyText
+  depth: 1
+  identifier: MyText
+  priority: 1
+  description: MyText
+  display_rule: MyText
+  family_id: 1
