@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170605230202) do
+ActiveRecord::Schema.define(version: 20170607091239) do
 
   create_table "assortment", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.boolean "is_active"
@@ -72,15 +72,51 @@ ActiveRecord::Schema.define(version: 20170605230202) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "parent_id"
+    t.text "name", limit: 255
+    t.boolean "is_visible"
+    t.text "foreign_id", limit: 255
+    t.text "slug"
+    t.integer "depth"
+    t.text "identifier", limit: 255
+    t.integer "priority"
+    t.text "description"
+    t.text "display_rule", limit: 255
+    t.integer "family_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "categories_map", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "supplier_category_id"
+    t.bigint "seller_category_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["seller_category_id"], name: "index_categories_map_on_seller_category_id"
+    t.index ["supplier_category_id"], name: "index_categories_map_on_supplier_category_id"
+  end
+
   create_table "product_attribute_values", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "attribute_id"
     t.bigint "attribute_value_id"
     t.bigint "product_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "supplier_id"
     t.index ["attribute_id"], name: "index_product_attribute_values_on_attribute_id"
     t.index ["attribute_value_id"], name: "index_product_attribute_values_on_attribute_value_id"
     t.index ["product_id"], name: "index_product_attribute_values_on_product_id"
+    t.index ["supplier_id"], name: "index_product_attribute_values_on_supplier_id"
+  end
+
+  create_table "product_categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "product_id"
+    t.bigint "category_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_product_categories_on_category_id"
+    t.index ["product_id"], name: "index_product_categories_on_product_id"
   end
 
   create_table "product_families", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -150,11 +186,56 @@ ActiveRecord::Schema.define(version: 20170605230202) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "supplier_attributes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.text "foreign_id", limit: 255
+    t.bigint "supplier_id"
+    t.bigint "attribute_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["attribute_id"], name: "index_supplier_attributes_on_attribute_id"
+    t.index ["supplier_id"], name: "index_supplier_attributes_on_supplier_id"
+  end
+
+  create_table "supplier_categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "parent_id"
+    t.text "name", limit: 255
+    t.text "foreign_id", limit: 255
+    t.integer "lft"
+    t.integer "lvl"
+    t.integer "rgt"
+    t.integer "root"
+    t.bigint "supplier_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["supplier_id"], name: "index_supplier_categories_on_supplier_id"
+  end
+
+  create_table "supplier_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "variation_id"
+    t.text "measurment_unit", limit: 255
+    t.text "payload"
+    t.bigint "supplier_category_id"
+    t.bigint "supplier_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["supplier_category_id"], name: "index_supplier_items_on_supplier_category_id"
+    t.index ["supplier_id"], name: "index_supplier_items_on_supplier_id"
+  end
+
+  create_table "suppliers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.text "name", limit: 255
+    t.text "import_identifier", limit: 255
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "variation_gtins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "value"
     t.bigint "variation_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "supplier_id"
+    t.index ["supplier_id"], name: "index_variation_gtins_on_supplier_id"
     t.index ["variation_id"], name: "index_variation_gtins_on_variation_id"
   end
 
@@ -189,15 +270,26 @@ ActiveRecord::Schema.define(version: 20170605230202) do
   add_foreign_key "assortment", "shops"
   add_foreign_key "attribute_value_transformations", "attributes"
   add_foreign_key "attribute_values", "attributes"
+  add_foreign_key "categories_map", "categories", column: "seller_category_id"
+  add_foreign_key "categories_map", "supplier_categories"
   add_foreign_key "product_attribute_values", "attribute_values"
   add_foreign_key "product_attribute_values", "attributes"
   add_foreign_key "product_attribute_values", "products"
+  add_foreign_key "product_attribute_values", "suppliers"
+  add_foreign_key "product_categories", "categories"
+  add_foreign_key "product_categories", "products"
   add_foreign_key "product_family_attribute_groups", "product_families", column: "family_id"
   add_foreign_key "product_family_attributes", "attributes"
   add_foreign_key "product_family_attributes", "product_families", column: "family_id"
   add_foreign_key "product_family_attributes", "product_family_attribute_groups", column: "group_id"
   add_foreign_key "product_links", "products"
   add_foreign_key "products", "product_families", column: "family_id"
+  add_foreign_key "supplier_attributes", "attributes"
+  add_foreign_key "supplier_attributes", "suppliers"
+  add_foreign_key "supplier_categories", "suppliers"
+  add_foreign_key "supplier_items", "supplier_categories"
+  add_foreign_key "supplier_items", "suppliers"
+  add_foreign_key "variation_gtins", "suppliers"
   add_foreign_key "variation_gtins", "variations"
   add_foreign_key "variation_photos", "variations"
   add_foreign_key "variations", "products"
