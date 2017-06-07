@@ -5,3 +5,24 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+Supplier.destroy_all
+
+Supplier.create!([{
+
+  name: "Icecat",
+  import_identifier: "icecat"
+}
+])
+
+Shop.destroy_all
+Shop.create!([{
+
+  name: "Elfas",
+  uuid: SecureRandom.uuid,
+  locale: "lt"
+}
+])
+
+p "Created #{Supplier.count} suppliers"
+p "Created #{Shop.count} shop"
