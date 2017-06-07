@@ -1,7 +1,7 @@
 class CreateSupplierCategories < ActiveRecord::Migration[5.1]
   def change
     create_table :supplier_categories do |t|
-      t.integer :parent_id
+      t.references :parent, foreign_key: { to_table: :supplier_categories }
       t.text :name, limit: 255
       t.text :foreign_id, limit: 255
       t.integer :lft

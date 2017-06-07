@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  item: one
+  supplier_attribute: one
+  has_duplicates: false
+
+two:
+  item: two
+  supplier_attribute: two
+  has_duplicates: false

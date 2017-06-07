@@ -8,14 +8,10 @@ class CreateAttributes < ActiveRecord::Migration[5.1]
       t.timestamps
     end
 
-    reversible do |dir|
-      dir.up do
-        Attribute.create_translation_table! :name => :string
-      end
-
-      dir.down do
-        Attribute.drop_translation_table!
-      end
+    create_table :attribute_translation do |t|
+      t.references :translatable, foreign_key: { to_table: :attributes }
+      t.string :locale
+      t.string :name
     end
   end
 end
