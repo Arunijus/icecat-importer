@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  parent_id: 1
+  name: MyText
+  foreign_id: MyText
+  lft: 1
+  lvl: 1
+  rgt: 1
+  root: 1
+  supplier: one
+
+two:
+  parent_id: 1
+  name: MyText
+  foreign_id: MyText
+  lft: 1
+  lvl: 1
+  rgt: 1
+  root: 1
+  supplier: two
