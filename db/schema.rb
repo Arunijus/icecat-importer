@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170607104231) do
+ActiveRecord::Schema.define(version: 20170607130225) do
 
   create_table "assortment", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.boolean "is_active"
@@ -249,6 +249,7 @@ ActiveRecord::Schema.define(version: 20170607104231) do
     t.text "import_identifier", limit: 255
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "uuid"
   end
 
   create_table "variation_gtins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
