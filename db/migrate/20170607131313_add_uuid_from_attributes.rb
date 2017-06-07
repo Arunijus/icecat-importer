@@ -1,0 +1,5 @@
+class AddUuidFromAttributes < ActiveRecord::Migration[5.1]
+  def change
+    add_column :attributes, :uuid, :string
+  end
+end

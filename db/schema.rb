@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170607130644) do
+ActiveRecord::Schema.define(version: 20170607131757) do
 
   create_table "assortment", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci" do |t|
     t.boolean "is_active"
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 20170607130644) do
     t.string "identifier"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "uuid"
     t.index ["attribute_id"], name: "index_attribute_values_on_attribute_id"
   end
 
@@ -58,6 +59,7 @@ ActiveRecord::Schema.define(version: 20170607130644) do
     t.string "value_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "uuid"
   end
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci" do |t|
@@ -74,6 +76,7 @@ ActiveRecord::Schema.define(version: 20170607130644) do
     t.integer "family_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "uuid"
   end
 
   create_table "categories_map", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci" do |t|
@@ -136,6 +139,7 @@ ActiveRecord::Schema.define(version: 20170607130644) do
     t.boolean "filtered"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "uuid"
     t.index ["attribute_id"], name: "index_product_family_attributes_on_attribute_id"
     t.index ["family_id"], name: "index_product_family_attributes_on_family_id"
     t.index ["group_id"], name: "index_product_family_attributes_on_group_id"
@@ -271,6 +275,7 @@ ActiveRecord::Schema.define(version: 20170607130644) do
     t.bigint "product_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "uuid"
     t.index ["product_id"], name: "index_variations_on_product_id"
   end
 
