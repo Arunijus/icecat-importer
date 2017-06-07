@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  variation_id: 1
+  measurment_unit: MyText
+  payload: MyText
+  supplier_category: one
+  supplier: one
+
+two:
+  variation_id: 1
+  measurment_unit: MyText
+  payload: MyText
+  supplier_category: two
+  supplier: two
