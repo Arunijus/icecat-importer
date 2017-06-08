@@ -47,7 +47,7 @@ ActiveRecord::Schema.define(version: 20170608122315) do
     t.bigint "attribute_value_id"
     t.text "attr_value"
     t.string "status"
-    t.string "hash"
+    t.string "value_hash"
     t.string "locale"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

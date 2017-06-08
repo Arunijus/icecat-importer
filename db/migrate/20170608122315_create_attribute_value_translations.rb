@@ -4,7 +4,7 @@ class CreateAttributeValueTranslations < ActiveRecord::Migration[5.1]
       t.references :attribute_value, foreign_key: true
       t.text :attr_value
       t.string :status
-      t.string :hash
+      t.string :value_hash
       t.string :locale
 
       t.timestamps

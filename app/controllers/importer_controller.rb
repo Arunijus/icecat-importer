@@ -37,7 +37,7 @@ class ImporterController < ApplicationController
       @attribute = Attribute.create(:uuid => SecureRandom.uuid)
       AttributeTranslation.create(:name => a["attribute_name"], :locale => "lt", :attr => @attribute)
       @attribute_value = AttributeValue.create(:att => @attribute)
-      AttributeValueTranslation.create(:attr_value => a["attribute_value"], :hash => a["attribute_value"].hash, :locale => "lt", :attribute_value => @attribute_value)
+      AttributeValueTranslation.create(:attr_value => a["attribute_value"], :value_hash => a["attribute_value"].hash, :locale => "lt", :attribute_value => @attribute_value)
       # @variationAttribute = ProductAttributeValue.create(:product => @product,
       #                                         :att => @attribute,
       #                                         :attribute_value => @attribute_value,
