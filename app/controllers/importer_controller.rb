@@ -20,7 +20,7 @@ class ImporterController < ApplicationController
     @supplier = Supplier.find_by name: "Icecat"
     @shop = Shop.find_by name: "Elfas"
 
-    @pj = ImporterController.icecat_map
+    @pj = ImporterController.icecat_map(17496464)
 
     @product = Product.create(:uuid => SecureRandom.uuid)
     @variation = Variation.create(:product => @product, :position => 1, :uuid => SecureRandom.uuid)
@@ -46,8 +46,8 @@ class ImporterController < ApplicationController
 
   end
 
-  def self.icecat_map
-    source = "http://live.icecat.biz/api/?shopname=openIcecat-live&lang=lt&content=&icecat_id=17496464"
+  def self.icecat_map(product_id)
+    source = "http://live.icecat.biz/api/?shopname=openIcecat-live&lang=lt&content=&icecat_id=#{product_id}"
     resp = Net::HTTP.get_response(URI.parse(source))
     parsed_json = ActiveSupport::JSON.decode(resp.body)
     data = parsed_json["data"]
