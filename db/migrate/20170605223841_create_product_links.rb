@@ -5,7 +5,7 @@ class CreateProductLinks < ActiveRecord::Migration[5.1]
       t.string :title
       t.string :url
       t.string :resource_id
-      t.string :type, limit: 50
+      t.string :link_type
       t.boolean :is_active
       t.integer :position
       t.datetime :deleted_at

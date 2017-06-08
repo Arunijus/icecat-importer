@@ -161,7 +161,7 @@ ActiveRecord::Schema.define(version: 20170608132213) do
     t.string "title"
     t.string "url"
     t.string "resource_id"
-    t.string "type", limit: 50
+    t.string "link_type"
     t.boolean "is_active"
     t.integer "position"
     t.datetime "deleted_at"

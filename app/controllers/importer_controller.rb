@@ -56,10 +56,7 @@ class ImporterController < ApplicationController
             AttributeTranslation.create(:name => a["attribute_name"], :locale => "lt", :attr => @attribute)
             @attributeValue = AttributeValue.create(:att => @attribute)
 
-            ProductAttributeValue.create(:product => @product,
-                                                    :att => @attribute,
-                                                    :attribute_value => @attributeValue,
-                                                    :supplier => @supplier)
+            ProductAttributeValue.create(:product => @product, :att => @attribute, :attribute_value => @attributeValue, :supplier => @supplier)
 
             AttributeValueTranslation.create(:attr_value => a["attribute_value"], :value_hash => a["attribute_value"].hash, :locale => "lt", :attribute_value => @attributeValue)
 
@@ -77,7 +74,11 @@ class ImporterController < ApplicationController
             VariationPhoto.create(:variation => @variation, :source => "Icecat::HTML", :file => image["file"], :position => position, :size => image["size"], :width => image["width"], :height => image["height"], :status => "active")
         end
 
-
+        link_position = 0
+        @pj["links"].each do |link|
+          ProductLink.create(:product => @product, :title => link["title"], :url => link["url"], :link_type => link["type"], :position => link_position, :is_active => 1)
+          link_position = link_position + 1
+        end
       end
     end
   end
@@ -108,6 +109,7 @@ class ImporterController < ApplicationController
         feature_name = feature["Feature"]["Name"]["Value"]
         feature_measure = feature["Feature"]["Measure"]["Signs"]["_"]
         feature_value = feature["Value"]
+
         feats.push({"attribute_id"=>feature_id, "attribute_name"=>feature_name, "attribute_value"=>feature_value, "attribute_sign"=>feature_measure})
       end
     end
@@ -125,8 +127,19 @@ class ImporterController < ApplicationController
       images.push({"file" => image_file, "size" => image_size, "width" => image_width, "height" => image_height, "isMain" => is_main})
     end
 
+    links = []
+    multimedia = parsed_json["data"]["Multimedia"]
+
+    multimedia.each do |media_item|
+      url = media_item["URL"]
+      type = media_item["Type"]
+      title = media_item["Description"]
+
+      links.push({"url" => url, "type" => type, "title" => title})
+    end
+
     return {"data"=>data,"product_name"=>product_name, "icecat_id" => icecat_id, "product_brand"=>product_brand,"product_gtins"=>product_gtins,
           "product_category_id"=>product_category_id,"product_family_id"=> product_family_id,"product_description"=>product_description,
-        "attributes"=>feats, "product_family_name"=> product_family_name, "images" => images }
+        "attributes"=>feats, "product_family_name"=> product_family_name, "images" => images, "links" => links }
   end
 end
