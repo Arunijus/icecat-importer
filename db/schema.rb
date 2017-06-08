@@ -232,7 +232,7 @@ ActiveRecord::Schema.define(version: 20170608132213) do
     t.index ["supplier_attribute_id"], name: "index_supplier_item_attribute_values_on_supplier_attribute_id"
   end
 
-  create_table "supplier_item_attribute_values_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "supplier_item_attribute_values_translation", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "supplier_item_attribute_values_id"
     t.string "locale"
     t.string "value"
@@ -326,7 +326,7 @@ ActiveRecord::Schema.define(version: 20170608132213) do
   add_foreign_key "supplier_categories", "suppliers"
   add_foreign_key "supplier_item_attribute_values", "supplier_attributes"
   add_foreign_key "supplier_item_attribute_values", "supplier_items", column: "item_id"
-  add_foreign_key "supplier_item_attribute_values_translations", "supplier_item_attribute_values", column: "supplier_item_attribute_values_id"
+  add_foreign_key "supplier_item_attribute_values_translation", "supplier_item_attribute_values", column: "supplier_item_attribute_values_id"
   add_foreign_key "supplier_items", "supplier_categories"
   add_foreign_key "supplier_items", "suppliers"
   add_foreign_key "supplier_items", "variations"
