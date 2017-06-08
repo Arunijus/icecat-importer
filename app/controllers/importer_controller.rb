@@ -48,6 +48,9 @@ class ImporterController < ApplicationController
 
       @supplierAttribute = SupplierAttribute.create(:att => @attribute, :supplier => @supplier, :foreign_id => a["attribute_id"])
       SupplierAttributeTranslation.create(:name => a["attribute_name"], :locale => "lt", :supplier_attribute => @supplierAttribute)
+
+      @supplierItemAttributeValue = SupplierItemAttributeValue.create(:supplier_item => @supplierItem, :supplier_attribute => @supplierAttribute, :has_duplicates => 0)
+      SupplierItemAttributeValueTranslation.create(:supplier_item_attribute_value => @supplierItemAttributeValue, :value => a["attribute_value"], :transformed_value => a["attribute_value"], :last_checked_value => a["attribute_value"], :locale => "lt")
     end
 
   end
