@@ -23,13 +23,13 @@ ActiveRecord::Schema.define(version: 20170608122315) do
     t.index ["shop_id"], name: "index_assortment_on_shop_id"
   end
 
-  create_table "attribute_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "attribute_translation", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "attribute_id"
     t.string "name"
     t.string "locale"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["attribute_id"], name: "index_attribute_translations_on_attribute_id"
+    t.index ["attribute_id"], name: "index_attribute_translation_on_attribute_id"
   end
 
   create_table "attribute_value_transformations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(version: 20170608122315) do
     t.index ["attribute_id"], name: "index_attribute_value_transformations_on_attribute_id"
   end
 
-  create_table "attribute_value_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "attribute_value_translation", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "attribute_value_id"
     t.text "attr_value"
     t.string "status"
@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(version: 20170608122315) do
     t.string "locale"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["attribute_value_id"], name: "index_attribute_value_translations_on_attribute_value_id"
+    t.index ["attribute_value_id"], name: "index_attribute_value_translation_on_attribute_value_id"
   end
 
   create_table "attribute_values", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -299,9 +299,9 @@ ActiveRecord::Schema.define(version: 20170608122315) do
 
   add_foreign_key "assortment", "products"
   add_foreign_key "assortment", "shops"
-  add_foreign_key "attribute_translations", "attributes"
+  add_foreign_key "attribute_translation", "attributes"
   add_foreign_key "attribute_value_transformations", "attributes"
-  add_foreign_key "attribute_value_translations", "attribute_values"
+  add_foreign_key "attribute_value_translation", "attribute_values"
   add_foreign_key "attribute_values", "attributes"
   add_foreign_key "categories_map", "categories", column: "seller_category_id"
   add_foreign_key "categories_map", "supplier_categories"
