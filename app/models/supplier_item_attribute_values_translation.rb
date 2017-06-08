@@ -1,0 +1,3 @@
+class SupplierItemAttributeValuesTranslation < ApplicationRecord
+  belongs_to :supplier_item_attribute_values
+end
