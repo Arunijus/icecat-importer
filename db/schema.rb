@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 20170607131757) do
 
-  create_table "assortment", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci" do |t|
+  create_table "assortment", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.boolean "is_active"
     t.string "status"
     t.bigint "product_id"
@@ -23,17 +23,14 @@ ActiveRecord::Schema.define(version: 20170607131757) do
     t.index ["shop_id"], name: "index_assortment_on_shop_id"
   end
 
-  create_table "attribute_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci" do |t|
-    t.integer "attribute_id", null: false
-    t.string "locale", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+  create_table "attribute_translation", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "translatable_id"
+    t.string "locale"
     t.string "name"
-    t.index ["attribute_id"], name: "index_attribute_translations_on_attribute_id"
-    t.index ["locale"], name: "index_attribute_translations_on_locale"
+    t.index ["translatable_id"], name: "index_attribute_translation_on_translatable_id"
   end
 
-  create_table "attribute_value_transformations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci" do |t|
+  create_table "attribute_value_transformations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "attribute_id"
     t.text "from_value"
     t.text "to_value"
@@ -44,7 +41,16 @@ ActiveRecord::Schema.define(version: 20170607131757) do
     t.index ["attribute_id"], name: "index_attribute_value_transformations_on_attribute_id"
   end
 
-  create_table "attribute_values", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci" do |t|
+  create_table "attribute_value_translation", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "translatable_id"
+    t.string "locale"
+    t.string "attr_value"
+    t.string "status"
+    t.string "hash"
+    t.index ["translatable_id"], name: "index_attribute_value_translation_on_translatable_id"
+  end
+
+  create_table "attribute_values", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "attribute_id"
     t.string "identifier"
     t.datetime "created_at", null: false
@@ -53,7 +59,7 @@ ActiveRecord::Schema.define(version: 20170607131757) do
     t.index ["attribute_id"], name: "index_attribute_values_on_attribute_id"
   end
 
-  create_table "attributes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci" do |t|
+  create_table "attributes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "type"
     t.string "suffix"
     t.string "value_type"
@@ -62,7 +68,7 @@ ActiveRecord::Schema.define(version: 20170607131757) do
     t.string "uuid"
   end
 
-  create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci" do |t|
+  create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "parent_id"
     t.text "name", limit: 255
     t.boolean "is_visible"
@@ -79,7 +85,7 @@ ActiveRecord::Schema.define(version: 20170607131757) do
     t.string "uuid"
   end
 
-  create_table "categories_map", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci" do |t|
+  create_table "categories_map", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "supplier_category_id"
     t.bigint "seller_category_id"
     t.datetime "created_at", null: false
@@ -88,7 +94,7 @@ ActiveRecord::Schema.define(version: 20170607131757) do
     t.index ["supplier_category_id"], name: "index_categories_map_on_supplier_category_id"
   end
 
-  create_table "product_attribute_values", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci" do |t|
+  create_table "product_attribute_values", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "attribute_id"
     t.bigint "attribute_value_id"
     t.bigint "product_id"
@@ -101,7 +107,7 @@ ActiveRecord::Schema.define(version: 20170607131757) do
     t.index ["supplier_id"], name: "index_product_attribute_values_on_supplier_id"
   end
 
-  create_table "product_categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci" do |t|
+  create_table "product_categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "product_id"
     t.bigint "category_id"
     t.datetime "created_at", null: false
@@ -110,7 +116,7 @@ ActiveRecord::Schema.define(version: 20170607131757) do
     t.index ["product_id"], name: "index_product_categories_on_product_id"
   end
 
-  create_table "product_families", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci" do |t|
+  create_table "product_families", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.string "uuid"
     t.boolean "is_approved"
@@ -118,7 +124,7 @@ ActiveRecord::Schema.define(version: 20170607131757) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "product_family_attribute_groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci" do |t|
+  create_table "product_family_attribute_groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.string "uuid"
     t.integer "position"
@@ -128,7 +134,7 @@ ActiveRecord::Schema.define(version: 20170607131757) do
     t.index ["family_id"], name: "index_product_family_attribute_groups_on_family_id"
   end
 
-  create_table "product_family_attributes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci" do |t|
+  create_table "product_family_attributes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "attribute_id"
     t.bigint "family_id"
     t.integer "position"
@@ -145,7 +151,7 @@ ActiveRecord::Schema.define(version: 20170607131757) do
     t.index ["group_id"], name: "index_product_family_attributes_on_group_id"
   end
 
-  create_table "product_links", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci" do |t|
+  create_table "product_links", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "product_id"
     t.string "title"
     t.string "url"
@@ -159,7 +165,7 @@ ActiveRecord::Schema.define(version: 20170607131757) do
     t.index ["product_id"], name: "index_product_links_on_product_id"
   end
 
-  create_table "products", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci" do |t|
+  create_table "products", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "uuid"
     t.text "note"
     t.datetime "exported_at"
@@ -170,7 +176,7 @@ ActiveRecord::Schema.define(version: 20170607131757) do
     t.index ["family_id"], name: "index_products_on_family_id"
   end
 
-  create_table "shops", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci" do |t|
+  create_table "shops", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.string "uuid"
     t.string "locale", limit: 10
@@ -178,7 +184,14 @@ ActiveRecord::Schema.define(version: 20170607131757) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "supplier_attributes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci" do |t|
+  create_table "supplier_attribute_translation", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "translatable_id"
+    t.string "locale"
+    t.string "name"
+    t.index ["translatable_id"], name: "index_supplier_attribute_translation_on_translatable_id"
+  end
+
+  create_table "supplier_attributes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.text "foreign_id", limit: 255
     t.bigint "supplier_id"
     t.bigint "attribute_id"
@@ -188,8 +201,8 @@ ActiveRecord::Schema.define(version: 20170607131757) do
     t.index ["supplier_id"], name: "index_supplier_attributes_on_supplier_id"
   end
 
-  create_table "supplier_categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci" do |t|
-    t.integer "parent_id"
+  create_table "supplier_categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "parent_id"
     t.text "name", limit: 255
     t.text "foreign_id", limit: 255
     t.integer "lft"
@@ -199,10 +212,11 @@ ActiveRecord::Schema.define(version: 20170607131757) do
     t.bigint "supplier_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["parent_id"], name: "index_supplier_categories_on_parent_id"
     t.index ["supplier_id"], name: "index_supplier_categories_on_supplier_id"
   end
 
-  create_table "supplier_item_attribute_value_translation", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci" do |t|
+  create_table "supplier_item_attribute_value_translation", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "translatable_id"
     t.string "locale"
     t.text "value"
@@ -211,7 +225,7 @@ ActiveRecord::Schema.define(version: 20170607131757) do
     t.index ["translatable_id"], name: "index_siavt_on_translatable_id"
   end
 
-  create_table "supplier_item_attribute_values", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci" do |t|
+  create_table "supplier_item_attribute_values", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "item_id"
     t.bigint "supplier_attribute_id"
     t.boolean "has_duplicates"
@@ -221,7 +235,7 @@ ActiveRecord::Schema.define(version: 20170607131757) do
     t.index ["supplier_attribute_id"], name: "index_supplier_item_attribute_values_on_supplier_attribute_id"
   end
 
-  create_table "supplier_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci" do |t|
+  create_table "supplier_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.text "measurment_unit", limit: 255
     t.text "payload"
     t.bigint "supplier_category_id"
@@ -234,14 +248,14 @@ ActiveRecord::Schema.define(version: 20170607131757) do
     t.index ["variation_id"], name: "index_supplier_items_on_variation_id"
   end
 
-  create_table "suppliers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci" do |t|
+  create_table "suppliers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.text "name", limit: 255
     t.text "import_identifier", limit: 255
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "variation_gtins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci" do |t|
+  create_table "variation_gtins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "value"
     t.bigint "variation_id"
     t.datetime "created_at", null: false
@@ -251,7 +265,7 @@ ActiveRecord::Schema.define(version: 20170607131757) do
     t.index ["variation_id"], name: "index_variation_gtins_on_variation_id"
   end
 
-  create_table "variation_photos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci" do |t|
+  create_table "variation_photos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "variation_id"
     t.string "file"
     t.integer "position"
@@ -270,7 +284,7 @@ ActiveRecord::Schema.define(version: 20170607131757) do
     t.index ["variation_id"], name: "index_variation_photos_on_variation_id"
   end
 
-  create_table "variations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci" do |t|
+  create_table "variations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "position"
     t.bigint "product_id"
     t.datetime "created_at", null: false
@@ -281,7 +295,9 @@ ActiveRecord::Schema.define(version: 20170607131757) do
 
   add_foreign_key "assortment", "products"
   add_foreign_key "assortment", "shops"
+  add_foreign_key "attribute_translation", "attributes", column: "translatable_id"
   add_foreign_key "attribute_value_transformations", "attributes"
+  add_foreign_key "attribute_value_translation", "attribute_values", column: "translatable_id"
   add_foreign_key "attribute_values", "attributes"
   add_foreign_key "categories_map", "categories", column: "seller_category_id"
   add_foreign_key "categories_map", "supplier_categories"
@@ -297,8 +313,10 @@ ActiveRecord::Schema.define(version: 20170607131757) do
   add_foreign_key "product_family_attributes", "product_family_attribute_groups", column: "group_id"
   add_foreign_key "product_links", "products"
   add_foreign_key "products", "product_families", column: "family_id"
+  add_foreign_key "supplier_attribute_translation", "supplier_attributes", column: "translatable_id"
   add_foreign_key "supplier_attributes", "attributes"
   add_foreign_key "supplier_attributes", "suppliers"
+  add_foreign_key "supplier_categories", "supplier_categories", column: "parent_id"
   add_foreign_key "supplier_categories", "suppliers"
   add_foreign_key "supplier_item_attribute_value_translation", "supplier_item_attribute_values", column: "translatable_id"
   add_foreign_key "supplier_item_attribute_values", "supplier_attributes"
