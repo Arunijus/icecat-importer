@@ -23,11 +23,14 @@ ActiveRecord::Schema.define(version: 20170607131757) do
     t.index ["shop_id"], name: "index_assortment_on_shop_id"
   end
 
-  create_table "attribute_translation", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "translatable_id"
-    t.string "locale"
+  create_table "attribute_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "attribute_id", null: false
+    t.string "locale", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "name"
-    t.index ["translatable_id"], name: "index_attribute_translation_on_translatable_id"
+    t.index ["attribute_id"], name: "index_attribute_translations_on_attribute_id"
+    t.index ["locale"], name: "index_attribute_translations_on_locale"
   end
 
   create_table "attribute_value_transformations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -295,7 +298,6 @@ ActiveRecord::Schema.define(version: 20170607131757) do
 
   add_foreign_key "assortment", "products"
   add_foreign_key "assortment", "shops"
-  add_foreign_key "attribute_translation", "attributes", column: "translatable_id"
   add_foreign_key "attribute_value_transformations", "attributes"
   add_foreign_key "attribute_value_translation", "attribute_values", column: "translatable_id"
   add_foreign_key "attribute_values", "attributes"

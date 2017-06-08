@@ -32,6 +32,18 @@ class ImporterController < ApplicationController
     Assortment.create(:product => @product, :shop => @shop, :is_active => 1, :status => 'Approved')
 
     @data = @pj["data"]
+
+    @pj["attributes"].each do |a|
+      @attribute = Attribute.create(:uuid => SecureRandom.uuid, :locale => "lt")
+      # @attribute = Attribute.create(:uuid => SecureRandom.uuid)
+      @attribute_value = AttributeValue.create(:att => @attribute)
+      @variationAttribute = ProductAttributeValue.create(:product => @product,
+                                              :att => @attribute,
+                                              :attribute_value => @attribute_value,
+                                              :supplier => @supplier)
+
+    end
+
   end
 
   def self.icecat_map
