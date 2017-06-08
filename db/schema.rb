@@ -189,12 +189,12 @@ ActiveRecord::Schema.define(version: 20170608125534) do
   end
 
   create_table "supplier_attribute_translation", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "supplier_attributes_id"
+    t.bigint "supplier_attribute_id"
     t.string "locale"
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["supplier_attributes_id"], name: "index_supplier_attribute_translation_on_supplier_attributes_id"
+    t.index ["supplier_attribute_id"], name: "index_supplier_attribute_translation_on_supplier_attribute_id"
   end
 
   create_table "supplier_attributes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -319,7 +319,7 @@ ActiveRecord::Schema.define(version: 20170608125534) do
   add_foreign_key "product_family_attributes", "product_family_attribute_groups", column: "group_id"
   add_foreign_key "product_links", "products"
   add_foreign_key "products", "product_families", column: "family_id"
-  add_foreign_key "supplier_attribute_translation", "supplier_attributes", column: "supplier_attributes_id"
+  add_foreign_key "supplier_attribute_translation", "supplier_attributes"
   add_foreign_key "supplier_attributes", "attributes"
   add_foreign_key "supplier_attributes", "suppliers"
   add_foreign_key "supplier_categories", "supplier_categories", column: "parent_id"
