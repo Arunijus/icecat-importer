@@ -16,7 +16,7 @@ class ImporterController < ApplicationController
     #   productIds << file["Product_ID"]
     #   count = count + 1
     # end
-
+    #
     @supplier = Supplier.find_by name: "Icecat"
     @shop = Shop.find_by name: "Elfas"
 
@@ -30,12 +30,15 @@ class ImporterController < ApplicationController
     end
 
     Assortment.create(:product => @product, :shop => @shop, :is_active => 1, :status => 'Approved')
+
+    @data = @pj["data"]
   end
 
   def self.icecat_map
     source = "http://live.icecat.biz/api/?shopname=openIcecat-live&lang=lt&content=&icecat_id=17496464"
     resp = Net::HTTP.get_response(URI.parse(source))
     parsed_json = ActiveSupport::JSON.decode(resp.body)
+    data = parsed_json["data"]
     general_info = parsed_json["data"]["GeneralInfo"]
 
     product_name = general_info["Title"]
@@ -59,13 +62,10 @@ class ImporterController < ApplicationController
           "attribute_value"=>feature_value, "attribute_sign"=>feature_sign})
       end
     end
-    return {"product_name"=>product_name, "product_brand"=>product_brand,"product_gtins"=>product_gtins,
+
+    return {"data"=>data,"product_name"=>product_name, "product_brand"=>product_brand,"product_gtins"=>product_gtins,
           "product_category_id"=>product_category_id,"product_family_id"=> product_family_id,"product_description"=>product_description,
         "attributes"=>feats }
-
-
-
-    # return parsed_json
   end
 
 end
