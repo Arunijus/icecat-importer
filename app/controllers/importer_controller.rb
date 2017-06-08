@@ -20,40 +20,51 @@ class ImporterController < ApplicationController
     @supplier = Supplier.find_by name: "Icecat"
     @shop = Shop.find_by name: "Elfas"
     @supplierCategory = SupplierCategory.find_by name: "Icecat"
+    @category = Category.find_by name: "Icecat"
 
     @pj = ImporterController.icecat_map(17496464)
 
-    @product = Product.create(:uuid => SecureRandom.uuid)
-    @variation = Variation.create(:product => @product, :position => 1, :uuid => SecureRandom.uuid)
-    @supplierItem = SupplierItem.create(:variation => @variation, :supplier => @supplier, :supplier_category => @supplierCategory, :foreign_id => @pj["icecat_id"], :payload => @pj["data"])
+    supplier_item = SupplierItem.find_by foreign_id: @pj["icecat_id"]
 
-    @pj["product_gtins"].each do |gtin|
-      VariationGtin.create(:supplier => @supplier, :variation => @variation, :value => gtin)
+    unless supplier_item
+      @product = Product.create(:uuid => SecureRandom.uuid)
+      @variation = Variation.create(:product => @product, :position => 1, :uuid => SecureRandom.uuid)
+      @supplierItem = SupplierItem.create(:variation => @variation, :supplier => @supplier, :supplier_category => @supplierCategory, :foreign_id => @pj["icecat_id"], :payload => @pj["data"])
+
+      @pj["product_gtins"].each do |gtin|
+        VariationGtin.create(:supplier => @supplier, :variation => @variation, :value => gtin)
+      end
+
+      Assortment.create(:product => @product, :shop => @shop, :is_active => 1, :status => 'Approved')
+
+      @data = @pj["data"]
+
+      @pj["attributes"].each do |a|
+        supplier_attribute = SupplierAttribute.find_by foreign_id: a["attribute_id"]
+
+        unless supplier_attribute
+          @attribute = Attribute.create(:uuid => SecureRandom.uuid, :suffix => a["feature_measure"])
+          AttributeTranslation.create(:name => a["attribute_name"], :locale => "lt", :attr => @attribute)
+          @attributeValue = AttributeValue.create(:att => @attribute)
+
+          ProductAttributeValue.create(:product => @product,
+                                                  :att => @attribute,
+                                                  :attribute_value => @attributeValue,
+                                                  :supplier => @supplier)
+
+          AttributeValueTranslation.create(:attr_value => a["attribute_value"], :value_hash => a["attribute_value"].hash, :locale => "lt", :attribute_value => @attributeValue)
+
+          @supplierAttribute = SupplierAttribute.create(:att => @attribute, :supplier => @supplier, :foreign_id => a["attribute_id"])
+          SupplierAttributeTranslation.create(:name => a["attribute_name"], :locale => "lt", :supplier_attribute => @supplierAttribute)
+
+          @supplierItemAttributeValue = SupplierItemAttributeValue.create(:supplier_item => @supplierItem, :supplier_attribute => @supplierAttribute, :has_duplicates => 0)
+          SupplierItemAttributeValueTranslation.create(:supplier_item_attribute_value => @supplierItemAttributeValue, :value => a["attribute_value"], :transformed_value => a["attribute_value"], :last_checked_value => a["attribute_value"], :locale => "lt")
+        end
+      end
+
+      ProductCategory.create(:product => @product, :category => @category)
+      
     end
-
-    Assortment.create(:product => @product, :shop => @shop, :is_active => 1, :status => 'Approved')
-
-    @data = @pj["data"]
-
-    @pj["attributes"].each do |a|
-      @attribute = Attribute.create(:uuid => SecureRandom.uuid)
-      AttributeTranslation.create(:name => a["attribute_name"], :locale => "lt", :attr => @attribute)
-      @attributeValue = AttributeValue.create(:att => @attribute)
-
-      ProductAttributeValue.create(:product => @product,
-                                              :att => @attribute,
-                                              :attribute_value => @attributeValue,
-                                              :supplier => @supplier)
-
-      AttributeValueTranslation.create(:attr_value => a["attribute_value"], :value_hash => a["attribute_value"].hash, :locale => "lt", :attribute_value => @attributeValue)
-
-      @supplierAttribute = SupplierAttribute.create(:att => @attribute, :supplier => @supplier, :foreign_id => a["attribute_id"])
-      SupplierAttributeTranslation.create(:name => a["attribute_name"], :locale => "lt", :supplier_attribute => @supplierAttribute)
-
-      @supplierItemAttributeValue = SupplierItemAttributeValue.create(:supplier_item => @supplierItem, :supplier_attribute => @supplierAttribute, :has_duplicates => 0)
-      SupplierItemAttributeValueTranslation.create(:supplier_item_attribute_value => @supplierItemAttributeValue, :value => a["attribute_value"], :transformed_value => a["attribute_value"], :last_checked_value => a["attribute_value"], :locale => "lt")
-    end
-
   end
 
   def self.icecat_map(product_id)
