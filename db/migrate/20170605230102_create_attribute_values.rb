@@ -6,13 +6,5 @@ class CreateAttributeValues < ActiveRecord::Migration[5.1]
 
       t.timestamps
     end
-
-    create_table :attribute_value_translation do |t|
-      t.references :translatable, foreign_key: { to_table: :attribute_values }
-      t.string :locale
-      t.string :attr_value
-      t.string :status
-      t.string :hash
-    end
   end
 end

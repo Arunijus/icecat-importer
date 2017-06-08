@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170607131757) do
+ActiveRecord::Schema.define(version: 20170608122315) do
 
   create_table "assortment", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.boolean "is_active"
@@ -24,13 +24,12 @@ ActiveRecord::Schema.define(version: 20170607131757) do
   end
 
   create_table "attribute_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer "attribute_id", null: false
-    t.string "locale", null: false
+    t.bigint "attribute_id"
+    t.string "name"
+    t.string "locale"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "name"
     t.index ["attribute_id"], name: "index_attribute_translations_on_attribute_id"
-    t.index ["locale"], name: "index_attribute_translations_on_locale"
   end
 
   create_table "attribute_value_transformations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -44,13 +43,15 @@ ActiveRecord::Schema.define(version: 20170607131757) do
     t.index ["attribute_id"], name: "index_attribute_value_transformations_on_attribute_id"
   end
 
-  create_table "attribute_value_translation", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "translatable_id"
-    t.string "locale"
-    t.string "attr_value"
+  create_table "attribute_value_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "attribute_value_id"
+    t.text "attr_value"
     t.string "status"
     t.string "hash"
-    t.index ["translatable_id"], name: "index_attribute_value_translation_on_translatable_id"
+    t.string "locale"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["attribute_value_id"], name: "index_attribute_value_translations_on_attribute_value_id"
   end
 
   create_table "attribute_values", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -298,8 +299,9 @@ ActiveRecord::Schema.define(version: 20170607131757) do
 
   add_foreign_key "assortment", "products"
   add_foreign_key "assortment", "shops"
+  add_foreign_key "attribute_translations", "attributes"
   add_foreign_key "attribute_value_transformations", "attributes"
-  add_foreign_key "attribute_value_translation", "attribute_values", column: "translatable_id"
+  add_foreign_key "attribute_value_translations", "attribute_values"
   add_foreign_key "attribute_values", "attributes"
   add_foreign_key "categories_map", "categories", column: "seller_category_id"
   add_foreign_key "categories_map", "supplier_categories"

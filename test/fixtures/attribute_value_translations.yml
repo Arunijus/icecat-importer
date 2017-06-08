@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  attribute_value: one
+  attr_value: MyText
+  status: MyString
+  hash: MyString
+  locale: MyString
+
+two:
+  attribute_value: two
+  attr_value: MyText
+  status: MyString
+  hash: MyString
+  locale: MyString

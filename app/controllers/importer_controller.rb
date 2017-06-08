@@ -34,13 +34,13 @@ class ImporterController < ApplicationController
     @data = @pj["data"]
 
     @pj["attributes"].each do |a|
-      @attribute = Attribute.create(:uuid => SecureRandom.uuid, :locale => "lt")
+      @attribute = Attribute.create(:uuid => SecureRandom.uuid)
       # @attribute = Attribute.create(:uuid => SecureRandom.uuid)
       @attribute_value = AttributeValue.create(:att => @attribute)
-      @variationAttribute = ProductAttributeValue.create(:product => @product,
-                                              :att => @attribute,
-                                              :attribute_value => @attribute_value,
-                                              :supplier => @supplier)
+      # @variationAttribute = ProductAttributeValue.create(:product => @product,
+      #                                         :att => @attribute,
+      #                                         :attribute_value => @attribute_value,
+      #                                         :supplier => @supplier)
 
     end
 
