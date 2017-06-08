@@ -24,6 +24,7 @@ class ImporterController < ApplicationController
 
     @product = Product.create(:uuid => SecureRandom.uuid)
     @variation = Variation.create(:product => @product, :position => 1, :uuid => SecureRandom.uuid)
+    @supplierItem = SupplierItem.create(:variation => @variation, :supplier => @supplier, :foreign_id => @pj["icecat_id"], :payload => @pj["data"])
 
     @pj["product_gtins"].each do |gtin|
       VariationGtin.create(:supplier => @supplier, :variation => @variation, :value => gtin)
@@ -55,9 +56,10 @@ class ImporterController < ApplicationController
     source = "http://live.icecat.biz/api/?shopname=openIcecat-live&lang=lt&content=&icecat_id=#{product_id}"
     resp = Net::HTTP.get_response(URI.parse(source))
     parsed_json = ActiveSupport::JSON.decode(resp.body)
-    data = parsed_json["data"]
+    data = resp.body
     general_info = parsed_json["data"]["GeneralInfo"]
 
+    icecat_id = general_info["IcecatId"]
     product_name = general_info["Title"]
     product_brand = general_info["Brand"]
     product_gtins = general_info["GTIN"]
@@ -73,14 +75,14 @@ class ImporterController < ApplicationController
       features_group["Features"].each do |feature|
         feature_id = feature["ID"]
         feature_name = feature["Feature"]["Name"]["Value"]
-        feature_sign = feature["Feature"]["Measure"]["Signs"]["_"]
+        feature_measure = feature["Feature"]["Measure"]["Signs"]["_"]
         feature_value = feature["Value"]
         feats.push({"attribute_id"=>feature_id, "attribute_name"=>feature_name,
-          "attribute_value"=>feature_value, "attribute_sign"=>feature_sign})
+          "attribute_value"=>feature_value, "attribute_sign"=>feature_measure})
       end
     end
 
-    return {"data"=>data,"product_name"=>product_name, "product_brand"=>product_brand,"product_gtins"=>product_gtins,
+    return {"data"=>data,"product_name"=>product_name, "icecat_id" => icecat_id, "product_brand"=>product_brand,"product_gtins"=>product_gtins,
           "product_category_id"=>product_category_id,"product_family_id"=> product_family_id,"product_description"=>product_description,
         "attributes"=>feats }
   end
