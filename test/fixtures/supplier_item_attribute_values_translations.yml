@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  supplier_item_attribute_values: one
+  locale: MyString
+  value: MyString
+
+two:
+  supplier_item_attribute_values: two
+  locale: MyString
+  value: MyString

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170608125534) do
+ActiveRecord::Schema.define(version: 20170608132213) do
 
   create_table "assortment", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.boolean "is_active"
@@ -222,15 +222,6 @@ ActiveRecord::Schema.define(version: 20170608125534) do
     t.index ["supplier_id"], name: "index_supplier_categories_on_supplier_id"
   end
 
-  create_table "supplier_item_attribute_value_translation", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "translatable_id"
-    t.string "locale"
-    t.text "value"
-    t.text "transformed_value"
-    t.text "last_checked_value"
-    t.index ["translatable_id"], name: "index_siavt_on_translatable_id"
-  end
-
   create_table "supplier_item_attribute_values", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "item_id"
     t.bigint "supplier_attribute_id"
@@ -239,6 +230,15 @@ ActiveRecord::Schema.define(version: 20170608125534) do
     t.datetime "updated_at", null: false
     t.index ["item_id"], name: "index_supplier_item_attribute_values_on_item_id"
     t.index ["supplier_attribute_id"], name: "index_supplier_item_attribute_values_on_supplier_attribute_id"
+  end
+
+  create_table "supplier_item_attribute_values_translation", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "supplier_item_attribute_values_id"
+    t.string "locale"
+    t.string "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["supplier_item_attribute_values_id"], name: "index_name"
   end
 
   create_table "supplier_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -323,9 +323,9 @@ ActiveRecord::Schema.define(version: 20170608125534) do
   add_foreign_key "supplier_attributes", "suppliers"
   add_foreign_key "supplier_categories", "supplier_categories", column: "parent_id"
   add_foreign_key "supplier_categories", "suppliers"
-  add_foreign_key "supplier_item_attribute_value_translation", "supplier_item_attribute_values", column: "translatable_id"
   add_foreign_key "supplier_item_attribute_values", "supplier_attributes"
   add_foreign_key "supplier_item_attribute_values", "supplier_items", column: "item_id"
+  add_foreign_key "supplier_item_attribute_values_translation", "supplier_item_attribute_values", column: "supplier_item_attribute_values_id"
   add_foreign_key "supplier_items", "suppliers"
   add_foreign_key "supplier_items", "variations"
   add_foreign_key "variation_gtins", "suppliers"
