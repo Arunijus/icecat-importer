@@ -64,9 +64,10 @@ ActiveRecord::Schema.define(version: 20170608132213) do
   end
 
   create_table "attributes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string "type"
+    t.string "special_type"
     t.string "suffix"
     t.string "value_type"
+    t.boolean "is_translatable"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "uuid"
@@ -174,10 +175,11 @@ ActiveRecord::Schema.define(version: 20170608132213) do
     t.string "uuid"
     t.text "note"
     t.datetime "exported_at"
-    t.integer "default_variation_id"
     t.bigint "family_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "default_variation_id"
+    t.index ["default_variation_id"], name: "index_products_on_default_variation_id"
     t.index ["family_id"], name: "index_products_on_family_id"
   end
 
@@ -199,7 +201,8 @@ ActiveRecord::Schema.define(version: 20170608132213) do
   end
 
   create_table "supplier_attributes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.text "foreign_id", limit: 255
+    t.string "foreign_id"
+    t.integer "primary_attribute_id"
     t.bigint "supplier_id"
     t.bigint "attribute_id"
     t.datetime "created_at", null: false
@@ -246,7 +249,7 @@ ActiveRecord::Schema.define(version: 20170608132213) do
 
   create_table "supplier_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "variation_id"
-    t.string "measurment_unit"
+    t.string "measurement_unit"
     t.string "foreign_id"
     t.text "payload"
     t.bigint "supplier_category_id"
@@ -267,6 +270,7 @@ ActiveRecord::Schema.define(version: 20170608132213) do
 
   create_table "variation_gtins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "value"
+    t.string "short_value"
     t.bigint "variation_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -323,6 +327,7 @@ ActiveRecord::Schema.define(version: 20170608132213) do
   add_foreign_key "product_family_attributes", "product_family_attribute_groups", column: "group_id"
   add_foreign_key "product_links", "products"
   add_foreign_key "products", "product_families", column: "family_id"
+  add_foreign_key "products", "variations", column: "default_variation_id"
   add_foreign_key "supplier_attribute_translation", "supplier_attributes"
   add_foreign_key "supplier_attributes", "attributes"
   add_foreign_key "supplier_attributes", "suppliers"
