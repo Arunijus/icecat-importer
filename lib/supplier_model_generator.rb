@@ -7,3 +7,5 @@ rails g model CategoriesMap supplier_category:references category:references
 
 rails g model AttributeTranslation attribute:references name:string locale:string
 rails g model AttributeValueTranslation attribute_value:references attr_value:text status:string hash:string locale:string
+
+rails g model SupplierAttributesTranslation supplier_attributes:references locale:string name:string

@@ -37,11 +37,12 @@ class ImporterController < ApplicationController
       @attribute = Attribute.create(:uuid => SecureRandom.uuid)
       # @attribute = Attribute.create(:uuid => SecureRandom.uuid)
       @attribute_value = AttributeValue.create(:att => @attribute)
-      # @variationAttribute = ProductAttributeValue.create(:product => @product,
-      #                                         :att => @attribute,
-      #                                         :attribute_value => @attribute_value,
-      #                                         :supplier => @supplier)
+      ProductAttributeValue.create(:product => @product,
+                                              :att => @attribute,
+                                              :attribute_value => @attribute_value,
+                                              :supplier => @supplier)
 
+      SupplierAttribute.create(:att => @attribute, :supplier => @supplier, :foreign_id => a["attribute_id"])
     end
 
   end

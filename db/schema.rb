@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170608122315) do
+ActiveRecord::Schema.define(version: 20170608125534) do
 
   create_table "assortment", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.boolean "is_active"
@@ -189,10 +189,12 @@ ActiveRecord::Schema.define(version: 20170608122315) do
   end
 
   create_table "supplier_attribute_translation", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "translatable_id"
+    t.bigint "supplier_attributes_id"
     t.string "locale"
     t.string "name"
-    t.index ["translatable_id"], name: "index_supplier_attribute_translation_on_translatable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["supplier_attributes_id"], name: "index_supplier_attribute_translation_on_supplier_attributes_id"
   end
 
   create_table "supplier_attributes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -317,7 +319,7 @@ ActiveRecord::Schema.define(version: 20170608122315) do
   add_foreign_key "product_family_attributes", "product_family_attribute_groups", column: "group_id"
   add_foreign_key "product_links", "products"
   add_foreign_key "products", "product_families", column: "family_id"
-  add_foreign_key "supplier_attribute_translation", "supplier_attributes", column: "translatable_id"
+  add_foreign_key "supplier_attribute_translation", "supplier_attributes", column: "supplier_attributes_id"
   add_foreign_key "supplier_attributes", "attributes"
   add_foreign_key "supplier_attributes", "suppliers"
   add_foreign_key "supplier_categories", "supplier_categories", column: "parent_id"

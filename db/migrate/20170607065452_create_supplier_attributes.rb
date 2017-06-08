@@ -8,10 +8,5 @@ class CreateSupplierAttributes < ActiveRecord::Migration[5.1]
       t.timestamps
     end
 
-    create_table :supplier_attribute_translation do |t|
-      t.references :translatable, foreign_key: { to_table: :supplier_attributes }
-      t.string :locale
-      t.string :name
-    end
   end
 end
