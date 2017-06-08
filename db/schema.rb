@@ -248,9 +248,11 @@ ActiveRecord::Schema.define(version: 20170608132213) do
     t.string "measurment_unit"
     t.string "foreign_id"
     t.text "payload"
+    t.bigint "supplier_category_id"
     t.bigint "supplier_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["supplier_category_id"], name: "index_supplier_items_on_supplier_category_id"
     t.index ["supplier_id"], name: "index_supplier_items_on_supplier_id"
     t.index ["variation_id"], name: "index_supplier_items_on_variation_id"
   end
@@ -328,6 +330,7 @@ ActiveRecord::Schema.define(version: 20170608132213) do
   add_foreign_key "supplier_item_attribute_value_translation", "supplier_item_attribute_values"
   add_foreign_key "supplier_item_attribute_values", "supplier_attributes"
   add_foreign_key "supplier_item_attribute_values", "supplier_items", column: "item_id"
+  add_foreign_key "supplier_items", "supplier_categories"
   add_foreign_key "supplier_items", "suppliers"
   add_foreign_key "supplier_items", "variations"
   add_foreign_key "variation_gtins", "suppliers"

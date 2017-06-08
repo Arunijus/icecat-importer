@@ -7,7 +7,6 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 Supplier.destroy_all
-
 Supplier.create!([{
 
   name: "Icecat",
@@ -24,5 +23,36 @@ Shop.create!([{
 }
 ])
 
+SupplierCategory.destroy_all
+SupplierCategory.create!([{
+    name: "Icecat",
+    foreign_id: "123",
+    supplier_id: 1,
+    root: 1
+}
+])
+
+Category.destroy_all
+@category = Category.create!([{
+    name: "Icecat",
+    is_visible: true,
+    foreign_id: "123",
+    slug: "icecat",
+    depth: 1,
+    identifier: "icecat",
+    priority: 0,
+    uuid: SecureRandom.uuid
+}
+])
+
+CategoriesMap.destroy_all
+CategoriesMap.create!([{
+    supplier_category_id: 1,
+    seller_category_id: 1
+}
+])
+
 p "Created #{Supplier.count} suppliers"
 p "Created #{Shop.count} shop"
+p "Created #{SupplierCategory.count} supplier category"
+p "Created #{Category.count} category"

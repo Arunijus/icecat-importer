@@ -19,12 +19,13 @@ class ImporterController < ApplicationController
     #
     @supplier = Supplier.find_by name: "Icecat"
     @shop = Shop.find_by name: "Elfas"
+    @supplierCategory = SupplierCategory.find_by name: "Icecat"
 
     @pj = ImporterController.icecat_map(17496464)
 
     @product = Product.create(:uuid => SecureRandom.uuid)
     @variation = Variation.create(:product => @product, :position => 1, :uuid => SecureRandom.uuid)
-    @supplierItem = SupplierItem.create(:variation => @variation, :supplier => @supplier, :foreign_id => @pj["icecat_id"], :payload => @pj["data"])
+    @supplierItem = SupplierItem.create(:variation => @variation, :supplier => @supplier, :supplier_category => @supplierCategory, :foreign_id => @pj["icecat_id"], :payload => @pj["data"])
 
     @pj["product_gtins"].each do |gtin|
       VariationGtin.create(:supplier => @supplier, :variation => @variation, :value => gtin)
