@@ -1,20 +1,32 @@
 class ImporterController < ApplicationController
-
   require 'net/http'
+  require 'nokogiri'
+
+  LOCALES = ['en', 'lt', 'lv', 'et']
 
   def index
-    @pj = ImporterController.icecat_map
-
-
-
+    # # Read index file for product ids
+    # xml_file = File.read(Rails.root + 'lib/docs/files.test.index.xml')
+    #
+    # doc = Nokogiri::XML.parse(xml_file)
+    #
+    # count = 0;
+    # productIds = []
+    # doc.xpath('//file').each do |file|
+    #   productIds << file["Product_ID"]
+    #   count = count + 1
+    # end
 
     @supplier = Supplier.find_by name: "Icecat"
     @shop = Shop.find_by name: "Elfas"
+
+    @pj = ImporterController.icecat_map
+
     @product = Product.create(:uuid => SecureRandom.uuid)
     @variation = Variation.create(:product => @product, :position => 1, :uuid => SecureRandom.uuid)
 
     @pj["product_gtins"].each do |gtin|
-      @variationGtin = VariationGtin.create(:supplier => @supplier, :variation => @variation, :value => gtin)
+      VariationGtin.create(:supplier => @supplier, :variation => @variation, :value => gtin)
     end
   end
 
