@@ -28,6 +28,8 @@ class ImporterController < ApplicationController
     @pj["product_gtins"].each do |gtin|
       VariationGtin.create(:supplier => @supplier, :variation => @variation, :value => gtin)
     end
+
+    Assortment.create(:product => @product, :shop => @shop, :is_active => 1, :status => 'Approved')
   end
 
   def self.icecat_map
