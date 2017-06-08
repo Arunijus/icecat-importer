@@ -27,7 +27,13 @@ class ImporterController < ApplicationController
     supplier_item = SupplierItem.find_by foreign_id: @pj["icecat_id"]
 
     unless supplier_item
-      @product = Product.create(:uuid => SecureRandom.uuid)
+      @productFamily = ProductFamily.find_by foreign_id: @pj["product_family_id"]
+
+      unless @productFamily
+        @productFamily = ProductFamily.create(:name => @pj["product_family_name"], :foreign_id => @pj["product_family_id"], :is_approved => 0)
+      end
+
+      @product = Product.create(:uuid => SecureRandom.uuid, :family => @productFamily)
       @variation = Variation.create(:product => @product, :position => 1, :uuid => SecureRandom.uuid)
       @supplierItem = SupplierItem.create(:variation => @variation, :supplier => @supplier, :supplier_category => @supplierCategory, :foreign_id => @pj["icecat_id"], :payload => @pj["data"])
 
@@ -63,7 +69,6 @@ class ImporterController < ApplicationController
       end
 
       ProductCategory.create(:product => @product, :category => @category)
-      
     end
   end
 
@@ -80,6 +85,7 @@ class ImporterController < ApplicationController
     product_gtins = general_info["GTIN"]
     product_category_id = general_info["Category"]["CategoryID"]
     product_family_id = general_info["ProductFamily"]["ProductFamilyID"]
+    product_family_name = general_info["ProductFamily"]["Value"]
     product_description = general_info["Description"]["LongDesc"]
 
     feats = []
@@ -99,7 +105,7 @@ class ImporterController < ApplicationController
 
     return {"data"=>data,"product_name"=>product_name, "icecat_id" => icecat_id, "product_brand"=>product_brand,"product_gtins"=>product_gtins,
           "product_category_id"=>product_category_id,"product_family_id"=> product_family_id,"product_description"=>product_description,
-        "attributes"=>feats }
+        "attributes"=>feats, "product_family_name"=> product_family_name }
   end
 
 end
