@@ -35,12 +35,15 @@ class ImporterController < ApplicationController
 
     @pj["attributes"].each do |a|
       @attribute = Attribute.create(:uuid => SecureRandom.uuid)
-      # @attribute = Attribute.create(:uuid => SecureRandom.uuid)
+      AttributeTranslation.create(:name => a["attribute_name"], :locale => "lt", :attr => @attribute)
       @attribute_value = AttributeValue.create(:att => @attribute)
+
       ProductAttributeValue.create(:product => @product,
                                               :att => @attribute,
                                               :attribute_value => @attribute_value,
                                               :supplier => @supplier)
+
+      AttributeValueTranslation.create(:attr_value => a["attribute_value"], :value_hash => a["attribute_value"].hash, :locale => "lt", :attribute_value => @attribute_value)
 
       SupplierAttribute.create(:att => @attribute, :supplier => @supplier, :foreign_id => a["attribute_id"])
     end
