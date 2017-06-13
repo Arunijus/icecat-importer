@@ -9,7 +9,7 @@ namespace :icecat do
     productIds = ["17496464"]
 
     # Read index file for product ids
-    xml_file = File.read(Rails.root + 'lib/docs/files.test.index.xml')
+    xml_file = File.read(Rails.root + 'lib/docs/index_file_1.xml')
 
     doc = Nokogiri::XML.parse(xml_file)
 

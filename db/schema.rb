@@ -251,7 +251,7 @@ ActiveRecord::Schema.define(version: 20170608132213) do
     t.bigint "variation_id"
     t.string "measurement_unit"
     t.string "foreign_id"
-    t.text "payload"
+    t.text "payload", limit: 4294967295
     t.bigint "supplier_category_id"
     t.bigint "supplier_id"
     t.datetime "created_at", null: false
