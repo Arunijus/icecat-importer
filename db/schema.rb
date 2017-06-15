@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170608132213) do
+ActiveRecord::Schema.define(version: 20170615070007) do
 
   create_table "assortment", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.boolean "is_active"
@@ -97,6 +97,14 @@ ActiveRecord::Schema.define(version: 20170608132213) do
     t.datetime "updated_at", null: false
     t.index ["seller_category_id"], name: "index_categories_map_on_seller_category_id"
     t.index ["supplier_category_id"], name: "index_categories_map_on_supplier_category_id"
+  end
+
+  create_table "category_closures", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "ancestor"
+    t.integer "descendant"
+    t.integer "depth"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "product_attribute_values", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -251,7 +259,7 @@ ActiveRecord::Schema.define(version: 20170608132213) do
     t.bigint "variation_id"
     t.string "measurement_unit"
     t.string "foreign_id"
-    t.text "payload", limit: 4294967295
+    t.text "payload"
     t.bigint "supplier_category_id"
     t.bigint "supplier_id"
     t.datetime "created_at", null: false

@@ -10,3 +10,5 @@ rails g model AttributeValueTranslation attribute_value:references attr_value:te
 
 rails g model SupplierAttributesTranslation supplier_attributes:references locale:string name:string
 rails g model SupplierItemAttributeValuesTranslation supplier_item_attribute_values:references locale:string value:text
+
+rails g model CategoryClosure ancestor:integer descendant:integer depth:integer

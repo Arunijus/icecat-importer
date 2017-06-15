@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ancestor: 1
+  descendant: 1
+  depth: 1
+
+two:
+  ancestor: 1
+  descendant: 1
+  depth: 1
