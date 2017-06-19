@@ -10,12 +10,13 @@ namespace :icecat_categories_closure do # rake task
     progress_bar = ProgressBar.new(csv.length)
     csv.each do |row|
       row_hash = row.to_hash
-      ancestor = row_hash["ancestor"]
-      descendant = row_hash["descendant"]
+      @ancestor = Category.find_by foreign_id: row_hash["ancestor"]
+      @descendant = Category.find_by foreign_id: row_hash["descendant"]
+
       depth = row_hash["depth"]
       CategoryClosure.create(:depth => depth,
-                      :ancestor => ancestor,
-                      :descendant => descendant)
+                      :ancestor => @ancestor,
+                      :descendant => @descendant)
       progress_bar.increment
     end
   end
