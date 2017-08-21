@@ -30,6 +30,12 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+# Bootstrap 4
+gem 'bootstrap', '~> 4.0.0.beta'
+
+# jQuery
+gem 'jquery-rails'
+
 # Use globalize for model translations
 gem 'globalize', git: 'https://github.com/globalize/globalize'
 gem 'activemodel-serializers-xml'

@@ -100,13 +100,13 @@ ActiveRecord::Schema.define(version: 20170615070007) do
   end
 
   create_table "category_closure", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "ancestor"
-    t.bigint "descendant"
+    t.bigint "ancestor_id"
+    t.bigint "descendant_id"
     t.integer "depth"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["ancestor"], name: "index_category_closure_on_ancestor_id"
-    t.index ["descendant"], name: "index_category_closure_on_descendant_id"
+    t.index ["ancestor_id"], name: "index_category_closure_on_ancestor_id"
+    t.index ["descendant_id"], name: "index_category_closure_on_descendant_id"
   end
 
   create_table "product_attribute_values", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -325,8 +325,8 @@ ActiveRecord::Schema.define(version: 20170615070007) do
   add_foreign_key "attribute_values", "attributes"
   add_foreign_key "categories_map", "categories", column: "seller_category_id"
   add_foreign_key "categories_map", "supplier_categories"
-  add_foreign_key "category_closure", "categories", column: "ancestor"
-  add_foreign_key "category_closure", "categories", column: "descendant"
+  add_foreign_key "category_closure", "categories", column: "ancestor_id", name: "ancestor"
+  add_foreign_key "category_closure", "categories", column: "descendant_id"
   add_foreign_key "product_attribute_values", "attribute_values"
   add_foreign_key "product_attribute_values", "attributes"
   add_foreign_key "product_attribute_values", "products"
