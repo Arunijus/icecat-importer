@@ -1,0 +1,34 @@
+.container
+  %table.table.table-bordered.table-responsive
+    %thead
+      %tr.row.m-0
+        %th.col-1= t('id')
+        %th.col-1= t('photo')
+        %th.col-5= t('title')
+        %th.col-2= t('ean')
+        %th.col-2= t('status')
+        %th.col-1= t('actions')
+    %tbody
+      - @products.each do |product|
+        %tr.row.m-0
+          %td.col-1= product.id
+          %td.col-1
+            - if product.variations.first.variation_photos.any?
+              %img.img-thumbnail{src: product.variations.first.variation_photos.first.file}
+          %td.col-5
+            - product.product_attribute_values.each do |pav|
+              - if pav.att.special_type === 'title'
+                - pav.attribute_value.attribute_value_translations.each do |translation|
+                  %em= "[#{translation.locale}]:"
+                  %span= translation.attr_value
+          %td.col-2
+            - if product.variations.first.variation_gtins.any?
+              - product.variations.first.variation_gtins.each do |gtin|
+                = gtin.value
+          %td.col-2
+            - @shops.each do |shop|
+              - product.assortment.each do |assortItem|
+                - if assortItem.shop === shop
+                  = "#{shop.name}: #{assortItem.status}"
+          %td.col-1
+            %a.btn.btn-outline-primary.pull-right{href: edit_product_path(product.id)}= icon('pencil')

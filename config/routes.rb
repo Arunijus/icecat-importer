@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
-  get 'importer/index'
-
   root 'importer#index'
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
+  get 'importer/index'
+  get '/products' => 'products#index', as: :products
+  get '/products/edit/:id' => 'products#edit', as: :edit_product
+
+  post '/products/update/:id' => 'products#update', as: :update_product
 end

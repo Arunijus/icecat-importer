@@ -30,4 +30,14 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  ean: "Ean"
+  title: "Title"
+  status: "Status"
+  photo: "Photo"
+  actions: "Actions"
+  id: "ID"
+  edit_product: "Edit product"
+  back: "Back"
+  save: "Save"
+  family: "Family"
+

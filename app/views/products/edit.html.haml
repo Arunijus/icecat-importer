@@ -1,0 +1,14 @@
+.container
+  %h3= t('edit_product')
+  %br
+  = form_for @product, url: update_product_path(@product), method: :post do |f|
+    - if @product.errors.any?
+      #error_explanation
+        %ul
+          - @product.errors.full_messages.each do |msg|
+            %li.text-red= msg
+    .form-group.row.m-0
+      = f.label t('family'), {class: 'col-2 col-form-label'}
+      = f.select(:family_id, @families.collect {|family| [family.name, family.id]}, {}, {class: 'form-control col-10'})
+    %br
+    %button.btn.btn-primary{type: 'submit'}= t('save')

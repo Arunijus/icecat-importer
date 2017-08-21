@@ -36,6 +36,12 @@ gem 'bootstrap', '~> 4.0.0.beta'
 # jQuery
 gem 'jquery-rails'
 
+# Hamlet
+gem 'hamlit'
+
+# Font-awesome
+gem 'font-awesome-sass', '~> 4.5.0'
+
 # Use globalize for model translations
 gem 'globalize', git: 'https://github.com/globalize/globalize'
 gem 'activemodel-serializers-xml'
