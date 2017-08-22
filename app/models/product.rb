@@ -1,4 +1,6 @@
 class Product < ApplicationRecord
+  paginates_per 50
+
   belongs_to :family, class_name: 'ProductFamily', foreign_key: "family_id", optional: true
   belongs_to :default_variation, class_name: 'Variation', foreign_key: "default_variation_id", optional: true
 

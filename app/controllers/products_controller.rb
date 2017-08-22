@@ -4,7 +4,7 @@ class ProductsController < ApplicationController
         :assortment,
         :product_attribute_values,
         variations: [:variation_gtins, :variation_photos]
-    )
+    ).page params[:page]
     @shops = Shop.all
   end
 
@@ -14,8 +14,12 @@ class ProductsController < ApplicationController
   end
 
   def update
-    @family = ProductFamily.find(params[:family_id])
-    @product = Product.find(params[:id])
+    @family = ProductFamily.find(product_params[:family_id])
+    @product = Product.includes(
+        :assortment,
+        :product_attribute_values,
+        variations: [:variation_photos]
+    ).find(params[:id])
 
     if @product.update(product_params)
       redirect_to(:action => 'index')
@@ -27,6 +31,6 @@ class ProductsController < ApplicationController
   private
 
   def product_params
-    params.require(:supplier).permit(:name, :address)
+    params.require(:product).permit(:family_id)
   end
 end

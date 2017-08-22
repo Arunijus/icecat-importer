@@ -42,6 +42,9 @@ gem 'hamlit'
 # Font-awesome
 gem 'font-awesome-sass', '~> 4.5.0'
 
+# Kaminari pagination
+gem 'kaminari'
+
 # Use globalize for model translations
 gem 'globalize', git: 'https://github.com/globalize/globalize'
 gem 'activemodel-serializers-xml'

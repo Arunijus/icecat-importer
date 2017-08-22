@@ -10,5 +10,8 @@
     .form-group.row.m-0
       = f.label t('family'), {class: 'col-2 col-form-label'}
       = f.select(:family_id, @families.collect {|family| [family.name, family.id]}, {}, {class: 'form-control col-10'})
+    -#.form-group.row.m-0
+    -#  = f.label t('status'), {class: 'col-2 col-form-label'}
+    -#  = f.select(:assortment, ['Approved', 'Not sold', 'Off-season'], {}, {class: 'form-control col-10'})
     %br
     %button.btn.btn-primary{type: 'submit'}= t('save')

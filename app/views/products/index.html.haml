@@ -1,4 +1,6 @@
 .container
+  %h3= t('products')
+  %br
   %table.table.table-bordered.table-responsive
     %thead
       %tr.row.m-0
@@ -31,4 +33,5 @@
                 - if assortItem.shop === shop
                   = "#{shop.name}: #{assortItem.status}"
           %td.col-1
-            %a.btn.btn-outline-primary.pull-right{href: edit_product_path(product.id)}= icon('pencil')
+            %a.btn.btn-outline-primary.btn-sm.pull-right{href: edit_product_path(product.id)}= icon('pencil')
+      = paginate @products
