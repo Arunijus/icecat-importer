@@ -1,0 +1,10 @@
+%ul.list-unstyled
+  - if @product.assortment.any?
+    - @product.assortment.each do |assortment_item|
+      - if assortment_item.is_active
+        %li.text-nowrap
+          %span.badge.badge-success= "#{assortment_item.shop.name}: active"
+      - else
+        %li.text-nowrap{'data-toggle': 'tooltip', 'data-placement': 'auto left', 'data-container': 'body', 'title': @product.get_why_not_active(assortment_item.shop)}
+          %span.badge.badge-warning= "#{assortment_item.shop.name}: hidden"
+          %i.fa.fa-info-circle

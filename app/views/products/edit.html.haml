@@ -7,11 +7,19 @@
         %ul
           - @product.errors.full_messages.each do |msg|
             %li.text-red= msg
+
     .form-group.row.m-0
       = f.label t('family'), {class: 'col-2 col-form-label'}
       = f.select(:family_id, @families.collect {|family| [family.name, family.id]}, {}, {class: 'form-control col-10'})
+
+    -#- @product.product_attribute_values.each do |pav|
+    -#  .form-group.row.m-0
+    -#    = f.label pav.attribute_id, {class: 'col-2 col-form-label'}
+    -#    = f.select(:value_id, pav.attribute_value.collect {|family| [family.name, family.id]}, {}, {class: 'form-control col-10'})
+
     -#.form-group.row.m-0
-    -#  = f.label t('status'), {class: 'col-2 col-form-label'}
-    -#  = f.select(:assortment, ['Approved', 'Not sold', 'Off-season'], {}, {class: 'form-control col-10'})
+    -#  = f.label t('upload_photo'), {class: 'col-2 col-form-label'}
+    -#  = f.file_field(:attachments, {multiple: true, direct_upload: true, class: 'form-control col-10'})
+
     %br
     %button.btn.btn-primary{type: 'submit'}= t('save')

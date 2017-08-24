@@ -28,10 +28,8 @@
               - product.variations.first.variation_gtins.each do |gtin|
                 = gtin.value
           %td.col-2
-            - @shops.each do |shop|
-              - product.assortment.each do |assortItem|
-                - if assortItem.shop === shop
-                  = "#{shop.name}: #{assortItem.status}"
+            =render 'product_activeness', :@product => product
           %td.col-1
             %a.btn.btn-outline-primary.btn-sm.pull-right{href: edit_product_path(product.id)}= icon('pencil')
+            %a.btn.btn-outline-primary.btn-sm.pull-right.mr-1{href: show_product_path(product.id)}= icon('search-plus')
       = paginate @products

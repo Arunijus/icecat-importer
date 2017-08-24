@@ -1,0 +1,27 @@
+- if @product.default_variation.variation_gtins.any?
+  .card.mb-3
+    .card-header
+      %h6= t('gtins')
+    %ul.pt-3
+      - @product.default_variation.variation_gtins.each do |gtin|
+        %li= gtin.value
+
+- if @product.variations.any?
+  =render 'additional_info'
+
+- if @product.categories.any?
+  =render 'categories'
+
+-  if @product.supplier_categories.any?
+  =render 'supplier_categories'
+
+- main_photo = @product.default_variation.variation_photos.first
+- if main_photo
+  .card.mb-3
+    .card-header
+      %h6= t('photo')
+    .card-block
+      %a{href: main_photo.file, 'data-toggle': 'imagebox'}
+        %img.img-thumbnail{src: main_photo.file}
+
+=render 'notes'

@@ -1,0 +1,20 @@
+.card.mb-3
+  .card-header
+    %h6= t('additional_info')
+  .card-block
+    %table.table.table-responsive
+      %tbody
+        %tr
+          %th= t('uuid')
+          %td= @product.uuid
+        %tr
+          %th= t('status')
+          %td
+            =render 'product_activeness'
+        - if @product.family
+          %tr
+            %th= t('family')
+            %td= @product.family.name
+        %tr
+          %th= t('created_at')
+          %td= @product.created_at

@@ -39,6 +39,9 @@ gem 'jquery-rails'
 # Hamlet
 gem 'hamlit'
 
+# Uploads with Shrine
+gem "shrine"
+
 # Font-awesome
 gem 'font-awesome-sass', '~> 4.5.0'
 

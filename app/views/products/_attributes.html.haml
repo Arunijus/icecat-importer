@@ -1,0 +1,181 @@
+.card.mb-3
+  .card-header
+    %h6= t('attributes')
+  .card-block
+    <div class="table-responsive">
+      <table class="table">
+        <tbody>
+          {% for attributeValue in product.attributeValues %}
+            {% if attributeValue.attribute.isEditable %}
+              <tr>
+                <th class="col-xs-4">
+                  {% if is_granted('ROLE_ACCESS_PRODUCT_ATTRIBUTES') %}
+                    <a href="{{ path('pim_attribute_edit', {'id': attributeValue.attribute.id}) }}">
+                      <span class="light-grey">#{{ attributeValue.attribute.id }}</span>
+                    </a>
+                  {% else %}
+                    <span class="light-grey">#{{ attributeValue.attribute.id }}</span>
+                  {% endif %}
+                  {{ attributeValue.attribute.toString(locale) }}{% if attributeValue.attribute.suffix %}, {{ attributeValue.attribute.suffix }}{% endif %}
+                </th>
+                {% if productShow is defined or not is_granted('ROLE_ACCESS_PRODUCT_ATTRIBUTES') %}
+                  <td>{{ attributeValue.getValueByLocaleOrFirstValue(locale) }}</td>
+                {% else %}
+                  <td class="col-xs-7 product-change-attribute-value pim-panels">
+                    <div class="pim-panel edit-attribute-value pim-panel-show">
+                      <span
+                        class="x-editable-span product-change-attribute-value-x-editable"
+                        data-product-id="{{ product.id }}"
+                        {# X-Editable options: #}
+                        data-type="select"
+                        data-source="{{ path('pim_product_attribute_value_json_list', {'id': attributeValue.attribute.id}) }}"
+                        data-value="{{ attributeValue.id }}"
+                        data-pk="{{ attributeValue.id }}"
+                        data-url="{{ path('pim_product_change_attribute_value', {'id': product.id, 'attributeId': attributeValue.attribute.id }) }}"
+                      >
+                        {{ attributeValue.getValueByLocaleOrFirstValue(locale) }}
+                      </span>
+                    </div>
+                    <div class="pim-panel new-attribute-value-field">
+                      {# TODO A proper "New attribute value" component should be here, to be reused in other attribute editing places, too. #}
+                      <span
+                        class="x-editable-span product-new-attribute-value-x-editable"
+                        data-product-id="{{ product.id }}"
+                        data-attribute-id="{{ attributeValue.attribute.id }}"
+                        {# X-Editable options: #}
+                        data-type="text"
+                        data-name="value"
+                        data-placeholder="Enter new attribute value"
+                        data-url="{{ path('pim_product_create_attribute_value', {'id': product.id, 'attributeValueId': attributeValue.id }) }}"
+                      ></span>
+                    </div>
+                    {% if not attributeValue.hasTranslation(locale) %}
+                      <div class="pim-panel new-attribute-value-translation-field">
+                        {# TODO A proper "New attribute value translation" component should be here, to be reused in other attribute editing places, too. #}
+                        <span
+                          class="x-editable-span product-new-attribute-value-translation-x-editable"
+                          data-product-id="{{ product.id }}"
+                          data-attribute-id="{{ attributeValue.attribute.id }}"
+                          {# X-Editable options: #}
+                          data-type="text"
+                          data-name="value"
+                          data-placeholder="Enter the value translation in {{ locale|upper }}"
+                          data-url="{{ path('pim_product_add_attribute_value_translation', {'attributeValueId': attributeValue.id }) }}"
+                        ></span>
+                        <div>
+                          {{ attributeValue.toString(locale, true) }}
+                        </div>
+                      </div>
+                    {% endif %}
+                  </td>
+                  <td class="col-xs-1 text-right">
+                    {% if not attributeValue.hasTranslation(locale) %}
+                      <a href="#"
+                        class="btn btn-default btn-sm product-new-attribute-value-translation">
+                          {{ icon('globe') }} {{ locale }}
+                      </a>
+                    {% endif %}
+                    <a href="{{ path('pim_product_remove_attribute_value', {'id': product.id, 'attributeId': attributeValue.attribute.id}) }}"
+                      class="btn btn-danger btn-sm" data-confirm data-load="#attributes">
+                        {{ icon('trash') }}
+                    </a>
+                  </td>
+                {% endif %}
+              </tr>
+            {% endif %}
+          {% endfor %}
+
+          {% if productShow is not defined and is_granted('ROLE_ACCESS_PRODUCT_ATTRIBUTES') %}
+            <tr>
+            {% if product.family %}
+              <td>
+                <select id="family-attributes-select"
+                  data-url="{{ path('pim_family_attribute_json_list', {'id': product.id}) }}"
+                  data-no-results-message="This product cannot have any more attributes, as defined
+                  in the product's family ({{ product.family.name }}).">
+                  <option>Choose attribute</option>
+                </select>
+              </td>
+              <td>
+                <select id="family-attributes-values-select"
+                  style="display: none;"
+                >
+                </select>
+              </td>
+              <td>
+                <button
+                  class="btn btn-primary"
+                  id="family-attribute-value-add"
+                  data-product-id="{{ product.id }}"
+                  disabled="disabled">
+                  Add attribute
+                </button>
+              </td>
+            {% else %}
+              <td colspan="3">
+                <div class="alert alert-warning">
+                  New attribute cannot be added, because this product is not assigned to any product family.
+                </div>
+              </td>
+            {% endif %}
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% if productShow is not defined and removedAttributesData is not empty and is_granted('ROLE_ACCESS_PRODUCT_ATTRIBUTES') %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4>Removed attributes</h4>
+    </div>
+    <div class="panel-body">
+      <div class="table-responsive">
+        <table class="table">
+          <tbody>
+            <tr>
+              <th class="col-xs-5">Attribute</th>
+              <th>Value by supplier</th>
+              <th class="col-xs-1"></th>
+            </tr>
+            {% for removedAttribute in removedAttributesData %}
+              {% set supplierValue = false %}
+              <tr>
+                <td>
+                  <a href="{{ path('pim_attribute_edit', {'id': removedAttribute.id}) }}">
+                    <span class="light-grey">#{{ removedAttribute.id }}</span>
+                  </a>
+                  {{ removedAttribute.name }}{% if removedAttribute.suffix %}, {{ removedAttribute.suffix }}{% endif %}
+                </td>
+                {% if removedAttribute.supplierHasValidTranslations %}
+                  <td>{{ removedAttribute.supplierValue }}</td>
+                  <td class="col-xs-1">
+                    <a href="{{ path('pim_product_restore_attribute_value_by_supplier', {'id': product.id, 'attributeId': removedAttribute.id, 'supplierValueId': removedAttribute.supplierValueId}) }}"
+                      class="btn btn-default btn-sm pull-right"
+                      title="Restore attribute"
+                      data-load="#attributes"
+                    >
+                      {{ icon('undo') }}
+                    </a>
+                  </td>
+                {% else %}
+                  <td><span class="text-warning">Attribute does not have valid supplier info.</span></td>
+                  <td class="col-xs-1">
+                    <a href="#"
+                      data-href="{{ path('pim_product_restore_attribute_value', {'id': product.id, 'attributeId': removedAttribute.id}) }}"
+                      data-toggle="modal" data-target="#restoreAttributeValueModal" data-target-body="#restore_attribute_value_modal_body"
+                      class="btn btn-default btn-sm pull-right product-restore-attribute-value"
+                      title="Restore attribute">
+                        {{ icon('undo') }}
+                    </a>
+                  </td>
+                {% endif %}
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endif %}

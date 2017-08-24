@@ -10,4 +10,32 @@ class Product < ApplicationRecord
   has_many :variations
   has_many :product_categories
   has_many :categories, through: :product_categories
+
+  def has_description
+    self.product_attribute_values.each do |pav|
+      if pav.att.special_type === 'description'
+        return true
+      end
+    end
+
+    false
+  end
+
+  def description
+    self.product_attribute_values.each do |pav|
+      if pav.att.special_type === 'description'
+        return pav.attribute_value.attribute_value_translations.first.attr_value
+      end
+    end
+
+    ''
+  end
+
+  def supplier_categories
+    {}
+  end
+
+  def get_why_not_active
+    'Because'
+  end
 end

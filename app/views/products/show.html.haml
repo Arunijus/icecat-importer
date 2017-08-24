@@ -1,0 +1,45 @@
+.container
+  %h3= t('show_product')
+  %br
+  .row
+    .col-md-9
+      .card
+        .tabpanel.p-3
+          %ul#productTabs.nav.nav-tabs.nav-justified
+            %li.nav-item{role: 'presentation'}
+              %a#information-tab.nav-link.active{href: '#information', 'aria-controls': 'seo', role: 'tab', 'data-toggle': 'tab'}
+                %h6= t('information')
+            %li.nav-item{role: 'presentation'}
+              %a#change-log-tab.nav-link{href: '#change_log', 'aria-controls': 'change-logs', role: 'tab', 'data-toggle': 'tab'}
+                %h6= t('change_log')
+            %li.nav-item{role: 'presentation'}
+              %a#supplier-info-tab.nav-link{href: '#supplier_info', 'data-id': 'supplier-info-tab', 'data-product-id': @product.id, 'aria-controls': 'seo', role: 'tab', 'data-toggle': 'tab'}
+                %h6= t('supplier_info')
+          #productTabsContent.tab-content.mt-3
+            #information.tab-pane.fade.show.active{role: 'tabpanel', 'aria-labelledby': 'information-tab'}
+              .row
+                .col-md-12
+                  .card
+                    .card-header
+                      %h6= t('description')
+                    .card-block
+                      - if @product.has_description
+                        %p.p-3= @product.description.html_safe
+                      - else
+                        %p.p-3.text-warning= t('no_description_warning')
+              .row.mt-3
+                .col-md-12
+                  .card
+                    .card-header
+                      %h6= t('photos')
+                    .card-block
+                      =render 'photos'
+              =render 'attributes'
+              - if @product.product_links.any?
+                =render 'links'
+            #change_log.tab-pane.fade{role: 'tabpanel', 'aria-labelledby': 'change-log-tab'}
+              =render 'change_log'
+            #supplier_info.tab-pane.fade{role: 'tabpanel', 'aria-labelledby': 'supplier-info-tab'}
+              =render 'supplier_info_tab'
+    .col-md-3
+      =render 'sidebar'

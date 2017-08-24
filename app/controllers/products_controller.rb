@@ -8,6 +8,10 @@ class ProductsController < ApplicationController
     @shops = Shop.all
   end
 
+  def show
+    @product = Product.find(params[:id])
+  end
+
   def edit
     @product = Product.find(params[:id])
     @families = ProductFamily.all

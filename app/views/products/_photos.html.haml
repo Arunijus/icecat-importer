@@ -1,0 +1,24 @@
+.container
+  .row.mt-4.mb-4
+    - @product.default_variation.variation_photos.each do |photo|
+      - res = Net::HTTP.get_response(URI.parse(photo.file))
+      - if res.code.to_i >= 200 && res.code.to_i < 400
+        .col-md-3
+          =render 'photo_action_buttons'
+          %a{href: photo.file, 'data-toggle': 'imagebox'}
+            %img.img-thumbnail{src: photo.file}
+            %a.wordwrap{href: photo.file}= File.basename photo.file
+            %br
+            - if photo.supplier_priority
+              = "SPC priority: #{ photo.supplier_priority }"
+            .photos-additional-info
+              - if photo.size or (photo.width and photo.height)
+                = 'Size:'
+                - if photo.width and photo.height
+                  = "#{ photo.width }x#{ photo.height }#{ photo.size ? ',' : '' }"
+                - if photo.size
+                  = photo.size
+                %br
+              - if photo.source
+                = "Source: #{ photo.source }"
+                %br

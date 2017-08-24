@@ -1,0 +1,7 @@
+.card.mb-3
+  .card-header
+    %h4= t('categories')
+  .card-block
+    %ul.list-unstyled
+      - @product.categories.each do |category|
+        %li.p-3= category.full_path_name('/ ')
