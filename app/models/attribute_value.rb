@@ -3,4 +3,8 @@ class AttributeValue < ApplicationRecord
 
   has_many :product_attribute_values
   has_many :attribute_value_translations
+
+  def attribute
+    Attribute.find(self.attribute_id)
+  end
 end

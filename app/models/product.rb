@@ -38,4 +38,12 @@ class Product < ApplicationRecord
   def get_why_not_active
     'Because'
   end
+
+  def attribute_values
+    av = []
+    self.product_attribute_values.each do |pav|
+      av << AttributeValue.find(pav.attribute_value.id)
+    end
+    av
+  end
 end

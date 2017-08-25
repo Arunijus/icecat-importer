@@ -34,7 +34,9 @@
                       %h6= t('photos')
                     .card-block
                       =render 'photos'
-              =render 'attributes'
+              .row.mt-3
+                .col-md-12
+                  =render 'attributes'
               - if @product.product_links.any?
                 =render 'links'
             #change_log.tab-pane.fade{role: 'tabpanel', 'aria-labelledby': 'change-log-tab'}

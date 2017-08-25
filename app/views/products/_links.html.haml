@@ -1,0 +1,26 @@
+.card.mt-3
+  .card-header
+    %h6= t('links')
+  .card-block
+    - if @product.product_links.any?
+      %table.table.table-responsive.container
+        %thead
+          %tr.row
+            %th.col-3= t('title')
+            %th.col-5= t('url')
+            %th.col-2= t('type')
+            %th.col-2= t('status')
+        %tbody
+          - @product.product_links.each do |link|
+            %tr.row
+              %td.col-3= link.title
+              %td.col-5
+                %a{href: link.url, 'target': '_blank'}= link.url
+              %td.col-2= link.link_type
+              %td.col-2
+                - if link.is_active
+                  %span.badge.badge-success= t('active')
+                - else
+                  %span.badge.badge-danger= t('inactive')
+    - else
+      %p.text-warning= t('product_has_no_links')
