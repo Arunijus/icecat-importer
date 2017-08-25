@@ -1,14 +1,14 @@
 .card
   .card-header
     %h6= t('attributes')
-  .card-block
+  .card-block.container
     %table.table.table-responsive
       %tbody>
         - @product.attribute_values.each do |attribute_value|
           - if attribute_value.attribute.is_editable
-            %tr
-              %th.col-xs-4
+            %tr.row
+              %th.col-4
                 -if attribute_value.attribute.attribute_translations.any?
                   %span.light-grey= attribute_value.attribute.information
-              %td= attribute_value.attribute_value_translations.first.attr_value
+              %td.col-8= attribute_value.attribute_value_translations.first.attr_value
 
