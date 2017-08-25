@@ -1,9 +1,9 @@
 .card.mt-3
   .card-header
     %h6= t('links')
-  .card-block
+  .card-block.container
     - if @product.product_links.any?
-      %table.table.table-responsive.container
+      %table.table.table-responsive
         %thead
           %tr.row
             %th.col-3= t('title')
